@@ -8,17 +8,19 @@ Nesse repositório você encontrará os meus projetos desenvolvidos nas linguage
 
 > ##  Calculadora Simples 🧮
 > - Aplicação desenvolvida para Windows e Linux, com ela você consegue realizar cálculos matemáticos simples.
-> ### 📚 Bibliotecas
-> - Tkinter
+> ### 📚 Linguagem e Biblioteca
+> - Python
+>   - Tkinter
 
 <br>
 
 
 > ##  Aplicação para fazer backup local de seus vídeos do Youtube 📼
 > - Aplicação desenvolvida para Windows e Linux, você consegue realizar seus backups dos seus conteúdos do youtube, em formato de mp4 e mp3.
-> ### 📚 Bibliotecas
-> - Tkinter
-> - Pytube
+> ### 📚 Linguagem e Bibliotecas
+> - Python
+>   - Tkinter
+>   - Pytube
 
 
 
