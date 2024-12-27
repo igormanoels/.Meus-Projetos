@@ -1,10 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
 
-from pytube import YouTube
-#from pytube import *
-
-from os import *
 
 # Antes do programa iniciar ele deve descobrir se o sistema é windows ou linux, pra definir o local padrão
 # Variáveis Globais
@@ -36,7 +32,7 @@ def alteraFormatoMP3():
     LOCAL = "C://Users//Public//Videos//YT Download//Audio"
 
 def iniciarDownload():
-    global LINK
+    global LINK, FORMATO
     LINK = etLink.get()
 
     if FORMATO == 0:
@@ -47,15 +43,36 @@ def iniciarDownload():
         print(LINK)
         messagebox.showinfo("Atenção", "Antes de inciar o download informe o link desejado.")
         return
-    try:
-        link = "https://www.youtube.com/watch?v=MVJMfigEON4"
-        yt = YouTube(link)
-        video = yt.streams.filter(res="720p", file_extension="mp4").first()
-        video.download(output_path="C:/Downloads", filename="meu_video.mp4")
-        print("Download concluído!")
-    except Exception as e:
-        messagebox.showerror("Erro", f"Ocorreu um erro: {e}")
 
+    match FORMATO:
+        Case 'MP4':
+            try:
+                yt = YouTube(url, on_progress_callback=on_progress)  # Cria o objeto YouTube
+                print(f"Título do vídeo: {yt.title}")  # Exibe o título do vídeo
+                ys = yt.streams.get_highest_resolution()  # Obtém o stream de maior resolução
+                ys.download(output_path=destinoVideos)  # Faz o download do vídeo
+                print("Download concluído!")
+            except Exception as e:
+                messagebox.showerror("Erro", f"Ocorreu um erro: {e}")
+        '''
+        Case 'MP3':
+            try:
+                options = {
+                    'format': 'bestaudio/best',
+                    'postprocessors': [{
+                        'key': 'FFmpegExtractAudio',
+                        'preferredcodec': 'mp3',
+                        'preferredquality': '320',
+                    }],
+                    'ffmpeg_location': 'src/bin/ffmpeg.exe',  # Caminho relativo para o FFmpeg
+                    'outtmpl': 'audios/%(title)s.%(ext)s',
+                }
+
+                with yt_dlp.YoutubeDL(options) as ydl:
+                    ydl.download([url])
+            except Exception as e:
+                messagebox.showerror("Erro", f"Ocorreu um erro: {e}")
+'''
 
 
 # Propriedades da Tela
