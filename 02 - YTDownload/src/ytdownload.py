@@ -1,5 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
+from pytubefix import YouTube
+from pytubefix.cli import on_progress
 
 
 # Antes do programa iniciar ele deve descobrir se o sistema é windows ou linux, pra definir o local padrão
@@ -45,16 +47,17 @@ def iniciarDownload():
         return
 
     match FORMATO:
-        Case 'MP4':
+        case 'MP4':
             try:
-                yt = YouTube(url, on_progress_callback=on_progress)  # Cria o objeto YouTube
+                yt = YouTube(LINK, on_progress_callback=on_progress)  # Cria o objeto YouTube
                 print(f"Título do vídeo: {yt.title}")  # Exibe o título do vídeo
                 ys = yt.streams.get_highest_resolution()  # Obtém o stream de maior resolução
-                ys.download(output_path=destinoVideos)  # Faz o download do vídeo
+                ys.download(output_path=LOCAL)  # Faz o download do vídeo
                 print("Download concluído!")
             except Exception as e:
                 messagebox.showerror("Erro", f"Ocorreu um erro: {e}")
-        '''
+
+'''
         Case 'MP3':
             try:
                 options = {
