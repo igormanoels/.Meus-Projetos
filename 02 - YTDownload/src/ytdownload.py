@@ -1,15 +1,18 @@
 from tkinter import *
 from tkinter import messagebox
+from tkinter.filedialog import askdirectory
 from pytubefix import YouTube
 from pytubefix.cli import on_progress
+import yt_dlp
+
 
 
 # Antes do programa iniciar ele deve descobrir se o sistema é windows ou linux, pra definir o local padrão
 # Variáveis Globais
 SISTEMA = 'windows'
-LOCAL = None
+LOCAL = 'Informe aqui a pasta de destino'
 FORMATO = 0
-LINK = None
+LINK = 'null'
 
 
 # Cores
@@ -21,44 +24,58 @@ vermelho = "#721B1B"
 
 # Funções
 def buscarDiretorio():
-    pass
+    novo_local = askdirectory(title="Selecione a pasta desejada")
+    atualizarDiretorio(novo_local)
+    print(LOCAL)
+
+
+def atualizarDiretorio(novo_local):
+    global LOCAL
+    LOCAL = novo_local
+    etDestino.delete(0, END)
+    etDestino.insert(0, LOCAL)
+
 
 def alteraFormatoMP4():
-    global FORMATO, LOCAL
+    global FORMATO
     FORMATO = 'MP4'
-    LOCAL = "C://Users//Public//Videos//YT Download//Videos"
+
 
 def alteraFormatoMP3():
-    global FORMATO, LOCAL
+    global FORMATO
     FORMATO = 'MP3'
-    LOCAL = "C://Users//Public//Videos//YT Download//Audio"
+
 
 def iniciarDownload():
     global LINK, FORMATO
     LINK = etLink.get()
+    ffmpeg = '/src/bin/ffmpeg.exe'
+
+    if LOCAL == 'Informe aqui a pasta de destino':
+        messagebox.showinfo("Atenção!", "Antes de iniciar o download informe o local desejado.")
+        return
 
     if FORMATO == 0:
-        messagebox.showinfo("Atenção", "Antes de inciar o download selecione um formato.")
+        messagebox.showinfo("Atenção!", "Antes de inciar o download selecione um formato.")
         return
 
-    if LINK is None:
+    if LINK == 'null' or LINK == 'Insira seu link aqui!' or LINK == '': 
         print(LINK)
-        messagebox.showinfo("Atenção", "Antes de inciar o download informe o link desejado.")
+        messagebox.showinfo("Atenção!", "Antes de inciar o download informe o link desejado.")
         return
+
 
     match FORMATO:
         case 'MP4':
             try:
                 yt = YouTube(LINK, on_progress_callback=on_progress)  # Cria o objeto YouTube
                 print(f"Título do vídeo: {yt.title}")  # Exibe o título do vídeo
-                ys = yt.streams.get_highest_resolution()  # Obtém o stream de maior resolução
+                ys = yt.streams.get_highest_resolution()  # Alterar para escolher a qualidade de 720x480 
                 ys.download(output_path=LOCAL)  # Faz o download do vídeo
                 print("Download concluído!")
             except Exception as e:
                 messagebox.showerror("Erro", f"Ocorreu um erro: {e}")
-
-'''
-        Case 'MP3':
+        case 'MP3':
             try:
                 options = {
                     'format': 'bestaudio/best',
@@ -67,15 +84,16 @@ def iniciarDownload():
                         'preferredcodec': 'mp3',
                         'preferredquality': '320',
                     }],
-                    'ffmpeg_location': 'src/bin/ffmpeg.exe',  # Caminho relativo para o FFmpeg
-                    'outtmpl': 'audios/%(title)s.%(ext)s',
+                    'ffmpeg_location': 'D:\\GitHub\\.Meus-Projetos\\02 - YTDownload\\src\\bin\\ffmpeg.exe',  
+                    # alterar o caminho absoluto, pelo relativo dentro do projeto
+                    'outtmpl': LOCAL+'/%(title)s.%(ext)s',
                 }
 
                 with yt_dlp.YoutubeDL(options) as ydl:
-                    ydl.download([url])
+                    ydl.download([LINK])
             except Exception as e:
                 messagebox.showerror("Erro", f"Ocorreu um erro: {e}")
-'''
+
 
 
 # Propriedades da Tela
@@ -92,10 +110,10 @@ tela.config(background=branco, border=False)
 #lbLogo = Label(tela, image='D://GitHub//.Meus-Projetos//02 - YTDownload//docs//figma//design system//Logo final.png').place(x=255, y=44)
 
 etDestino = Entry(tela, width=35, font=('Viga 16'))
-etDestino.insert(0, 'Informe aqui a pasta de destino')
+etDestino.insert(0, LOCAL)
 etDestino.place(x=80, y=183)
 
-btnProcurar = Button(tela, text='Procurar', font='Viga', bg=branco, fg=laranja, width=12, height=2)
+btnProcurar = Button(tela, text='Procurar', command=buscarDiretorio, font='Viga', bg=branco, fg=laranja, width=12, height=2)
 btnProcurar.place(x=520, y=187)
 
 etLink = Entry(tela, width=46, font=('Viga 16'))
