@@ -20,7 +20,8 @@ Nesse repositório você encontrará os meus projetos desenvolvidos nas linguage
 > ### 📚 Linguagem e Bibliotecas
 > - Python
 >   - Tkinter
->   - Pytube
+>   - pytubefix
+>   - yt_dlp
 
 
 
