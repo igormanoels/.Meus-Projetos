@@ -2,19 +2,19 @@ package application;
 	
 import javafx.application.Application;
 import javafx.stage.Stage;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
+import javafx.stage.StageStyle;
 
 
 public class Main extends Application {
+	
 	@Override
-	public void start(Stage primaryStage) {
+	public void start(Stage stage) {
 		try {
-			BorderPane root = new BorderPane();
-			Scene scene = new Scene(root,400,400);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			primaryStage.setScene(scene);
-			primaryStage.show();
+			Tela tela = new Tela();
+			stage.setScene(tela.telaCalculadora(stage));
+			stage.setResizable(false); // Bloqueia o redimensionamento da tela
+			//stage.initStyle(StageStyle.UNDECORATED); // Também é possivel remove a barra do windows
+			stage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
