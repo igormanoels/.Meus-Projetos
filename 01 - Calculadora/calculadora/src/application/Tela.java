@@ -2,20 +2,20 @@ package application;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 
 public class Tela {
 	
-	public Scene telaCalculadora(Stage tela) {
+	public Scene telaCalculadora() {
 		
 		GridPane grid = new GridPane();
 		Scene principal = new Scene(grid, 320, 514);
-		
+
 		
 		// Componentes da Tela
-		TextField txtDisplay = new TextField();
+		Label txtDisplay = new Label("Display");
 		grid.add(txtDisplay, 0, 0);
 		GridPane.setColumnSpan(txtDisplay, 4);
 		
@@ -63,7 +63,90 @@ public class Tela {
 		grid.add(btnPonto, 1, 5);
 		grid.add(btnVirgula, 2, 5);
 		
+		
+		// Ações dos botões da aplicação
+		principal.setOnKeyPressed((KeyEvent e) -> botoesFisicos(e));
+		
+		
+		
+//		if (e.getCode() == KeyCode.) {
+//			System.out.println("Botão igual apertado.");
+//		}
+
+		
+		btnIgual.setOnAction(
+				e -> btnApertado()
+		);
+		
+		
+		
 		return principal;
+		
+	}
+	
+	//Método para mapear o teclado físico
+	private void botoesFisicos(KeyEvent e) {
+		if (e.isShiftDown()) {
+			switch (e.getCode()) {
+				case DIGIT8:
+						System.out.println("Botão * apertado.");
+					break;
+				default:
+					System.out.println(e.getCode().getName());
+				break;
+			}
+			
+		} else {
+			switch (e.getCode()) {
+				case EQUALS:
+						System.out.println("Botão igual apertado.");
+					break;
+				case DIGIT0, NUMPAD0:
+						System.out.println("0");
+					break;
+				case DIGIT1, NUMPAD1:
+						System.out.println("1");
+					break;
+				case DIGIT2, NUMPAD2:
+						System.out.println("2");
+					break;
+				case DIGIT3, NUMPAD3:
+						System.out.println("3");
+					break;
+				case DIGIT4, NUMPAD4:
+						System.out.println("4");
+					break;
+				case DIGIT5, NUMPAD5:
+						System.out.println("5");
+					break;
+				case DIGIT6, NUMPAD6:
+						System.out.println("6");
+					break;
+				case DIGIT7, NUMPAD7:
+						System.out.println("7");
+					break;
+				case DIGIT8, NUMPAD8:
+						System.out.println("8");
+					break;
+				case DIGIT9, NUMPAD9:
+						System.out.println("9");
+					break;
+				case MINUS:
+						System.out.println("-");
+					break;
+				case UNDEFINED:
+						System.out.println("/");
+					break;
+				default:
+						System.out.println(e.getCode().getName());
+					break;
+				}
+		}
+	}
+	
+	
+	public void btnApertado() {
+		System.out.println("Botão igual apertado.");
 		
 	}
 }

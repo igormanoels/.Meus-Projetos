@@ -2,7 +2,6 @@ package application;
 	
 import javafx.application.Application;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 
 public class Main extends Application {
@@ -11,9 +10,10 @@ public class Main extends Application {
 	public void start(Stage stage) {
 		try {
 			Tela tela = new Tela();
-			stage.setScene(tela.telaCalculadora(stage));
+			stage.setScene(tela.telaCalculadora());
 			stage.setResizable(false); // Bloqueia o redimensionamento da tela
 			//stage.initStyle(StageStyle.UNDECORATED); // Também é possivel remove a barra do windows
+			
 			stage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
