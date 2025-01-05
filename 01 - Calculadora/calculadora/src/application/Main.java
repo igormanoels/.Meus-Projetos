@@ -11,7 +11,7 @@ public class Main extends Application {
 		try {
 			Tela tela = new Tela();
 			stage.setScene(tela.telaCalculadora());
-			stage.setResizable(false); // Bloqueia o redimensionamento da tela
+			//stage.setResizable(false); // Bloqueia o redimensionamento da tela
 			//stage.initStyle(StageStyle.UNDECORATED); // Também é possivel remove a barra do windows
 			
 			stage.show();

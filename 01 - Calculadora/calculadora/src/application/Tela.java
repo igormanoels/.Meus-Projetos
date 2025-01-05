@@ -1,5 +1,6 @@
 package application;
 
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,12 +13,17 @@ public class Tela {
 		
 		GridPane grid = new GridPane();
 		Scene principal = new Scene(grid, 320, 514);
+		grid.getStylesheets().add(getClass().getResource("/style/application.css").toExternalForm());
 
+        grid.setHgap(8);
+        grid.setVgap(8);
 		
 		// Componentes da Tela
 		Label txtDisplay = new Label("Display");
 		grid.add(txtDisplay, 0, 0);
+		GridPane.setMargin(txtDisplay, new Insets(16));
 		GridPane.setColumnSpan(txtDisplay, 4);
+		
 		
 		Button btnMult = new Button("×");
 		Button btnDiv = new Button("÷");
