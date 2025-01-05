@@ -12,17 +12,16 @@ public class Tela {
 	public Scene telaCalculadora() {
 		
 		GridPane grid = new GridPane();
-		Scene principal = new Scene(grid, 320, 514);
+		Scene principal = new Scene(grid);
 		grid.getStylesheets().add(getClass().getResource("/style/application.css").toExternalForm());
 
         grid.setHgap(8);
         grid.setVgap(8);
 		
 		// Componentes da Tela
-		Label txtDisplay = new Label("Display");
+		Label txtDisplay = new Label("0");
 		grid.add(txtDisplay, 0, 0);
-		GridPane.setMargin(txtDisplay, new Insets(16));
-		GridPane.setColumnSpan(txtDisplay, 4);
+		GridPane.setColumnSpan(txtDisplay, 4); // Ocupa 4 colunas
 		
 		
 		Button btnMult = new Button("×");
@@ -33,7 +32,7 @@ public class Tela {
 		grid.add(btnDiv, 1, 1);
 		grid.add(btnAdc, 2, 1);
 		grid.add(btnSub, 3, 1);
-		
+
 		Button btnSete = new Button("7");
 		Button btnOito = new Button("8");
 		Button btnNove = new Button("9");
@@ -60,8 +59,9 @@ public class Tela {
 		grid.add(btnDois, 1, 4);
 		grid.add(btnTres, 2, 4);
 		grid.add(btnIgual, 3, 4);
-		GridPane.setRowSpan(btnIgual, 2);
-		
+		btnIgual.setId("botaoIgual");
+		GridPane.setRowSpan(btnIgual, 2); // Ocupa duas linhas
+				
 		Button btnZero = new Button("0");
 		Button btnPonto = new Button(".");
 		Button btnVirgula = new Button(",");
@@ -69,6 +69,14 @@ public class Tela {
 		grid.add(btnPonto, 1, 5);
 		grid.add(btnVirgula, 2, 5);
 		
+		
+		GridPane.setMargin(txtDisplay, new Insets(16, 16, 8, 16));// Alteração das Margens: Top, Right, Bottom Left
+		GridPane.setMargin(btnMult, new Insets(0, 0 , 0, 16)); 
+		GridPane.setMargin(btnSete, new Insets(0, 0 , 0, 16)); 
+		GridPane.setMargin(btnQuatro, new Insets(0, 0 , 0, 16)); 
+		GridPane.setMargin(btnUm, new Insets(0, 0 , 0, 16)); 
+		GridPane.setMargin(btnZero, new Insets(0, 0 , 0, 16)); 
+
 		
 		// Ações dos botões da aplicação
 		principal.setOnKeyPressed((KeyEvent e) -> botoesFisicos(e));
@@ -80,10 +88,9 @@ public class Tela {
 //		}
 
 		
-		btnIgual.setOnAction(
-				e -> btnApertado()
-		);
-		
+		/*
+		 * btnIgual.setOnAction( e -> btnApertado() );
+		 */		
 		
 		
 		return principal;
@@ -151,8 +158,12 @@ public class Tela {
 	}
 	
 	
-	public void btnApertado() {
-		System.out.println("Botão igual apertado.");
+	private void display(String valor) {
+		StringBuffer resultado = new StringBuffer();
+		
+		resultado.append(valor);
 		
 	}
+	
+	
 }
