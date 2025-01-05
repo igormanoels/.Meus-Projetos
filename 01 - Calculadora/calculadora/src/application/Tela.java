@@ -9,6 +9,9 @@ import javafx.scene.layout.GridPane;
 
 public class Tela {
 	
+	private Label txtDisplay = new Label();
+	private StringBuffer resultado = new StringBuffer();
+	
 	public Scene telaCalculadora() {
 		
 		GridPane grid = new GridPane();
@@ -19,7 +22,6 @@ public class Tela {
         grid.setVgap(8);
 		
 		// Componentes da Tela
-		Label txtDisplay = new Label("0");
 		grid.add(txtDisplay, 0, 0);
 		GridPane.setColumnSpan(txtDisplay, 4); // Ocupa 4 colunas
 		
@@ -36,20 +38,20 @@ public class Tela {
 		Button btnSete = new Button("7");
 		Button btnOito = new Button("8");
 		Button btnNove = new Button("9");
-		Button btnPerc = new Button("%");
+		Button btnRaiz = new Button("√");
 		grid.add(btnSete, 0, 2);
 		grid.add(btnOito, 1, 2);
 		grid.add(btnNove, 2, 2);
-		grid.add(btnPerc, 3, 2);
+		grid.add(btnRaiz, 3, 2);
 		
 		Button btnQuatro = new Button("4");
 		Button btnCinco = new Button("5");
 		Button btnSeis = new Button("6");
-		Button btnRaiz = new Button("√");
+		Button btnClear = new Button("CE");
 		grid.add(btnQuatro, 0, 3);
 		grid.add(btnCinco, 1, 3);
 		grid.add(btnSeis, 2, 3);
-		grid.add(btnRaiz, 3, 3);
+		grid.add(btnClear, 3, 3);
 		
 		Button btnUm = new Button("1");
 		Button btnDois = new Button("2");
@@ -81,18 +83,43 @@ public class Tela {
 		// Ações dos botões da aplicação
 		principal.setOnKeyPressed((KeyEvent e) -> botoesFisicos(e));
 		
-		
-		
-//		if (e.getCode() == KeyCode.) {
-//			System.out.println("Botão igual apertado.");
-//		}
 
+		btnMult.setOnAction(e -> display("*"));
+		btnDiv.setOnAction(e -> display("÷"));
+		btnAdc.setOnAction(e -> display("+"));
+		btnSub.setOnAction(e -> display("-"));
 		
-		/*
-		 * btnIgual.setOnAction( e -> btnApertado() );
-		 */		
+		btnSete.setOnAction(e -> display("7"));
+		btnOito.setOnAction(e -> display("8"));
+		btnNove.setOnAction(e -> display("9"));
+		btnRaiz.setOnAction(e -> display("√"));
+		
+		btnQuatro.setOnAction(e -> display("4"));
+		btnCinco.setOnAction(e -> display("5"));
+		btnSeis.setOnAction(e -> display("6"));
+		
+		btnUm.setOnAction(e -> display("1"));
+		btnDois.setOnAction(e -> display("2"));
+		btnTres.setOnAction(e -> display("3"));
+
+		btnZero.setOnAction( e -> display("0"));
+		btnPonto.setOnAction(e -> display("."));
+		btnVirgula.setOnAction(e -> display(","));
+		
+		btnClear.setOnAction(e -> limparDisplay());
 		
 		
+// 		Alterar para chamar a função de executar cálculo
+//		if (e.getCode() == KeyCode.) {
+//		System.out.println("Botão igual apertado.");
+//	}
+//		
+//		btnIgual.setOnAction(
+//			e -> display("=")		
+//		); 
+		
+		limparDisplay();
+
 		return principal;
 		
 	}
@@ -102,7 +129,7 @@ public class Tela {
 		if (e.isShiftDown()) {
 			switch (e.getCode()) {
 				case DIGIT8:
-						System.out.println("Botão * apertado.");
+					display("*");
 					break;
 				default:
 					System.out.println(e.getCode().getName());
@@ -115,40 +142,49 @@ public class Tela {
 						System.out.println("Botão igual apertado.");
 					break;
 				case DIGIT0, NUMPAD0:
-						System.out.println("0");
+						display("0");
 					break;
 				case DIGIT1, NUMPAD1:
-						System.out.println("1");
+						display("1");
 					break;
 				case DIGIT2, NUMPAD2:
-						System.out.println("2");
+						display("2");
 					break;
 				case DIGIT3, NUMPAD3:
-						System.out.println("3");
+						display("3");
 					break;
 				case DIGIT4, NUMPAD4:
-						System.out.println("4");
+						display("4");
 					break;
 				case DIGIT5, NUMPAD5:
-						System.out.println("5");
+						display("5");
 					break;
 				case DIGIT6, NUMPAD6:
-						System.out.println("6");
+						display("6");
 					break;
 				case DIGIT7, NUMPAD7:
-						System.out.println("7");
+						display("7");
 					break;
 				case DIGIT8, NUMPAD8:
-						System.out.println("8");
+						display("8");
 					break;
 				case DIGIT9, NUMPAD9:
-						System.out.println("9");
+						display("9");
 					break;
 				case MINUS:
-						System.out.println("-");
+						display("-");
 					break;
 				case UNDEFINED:
-						System.out.println("/");
+						display("÷");
+					break;
+				case PERIOD:
+						display(".");
+					break;
+				case COMMA:
+						display(",");
+					break;
+				case DELETE:
+						limparDisplay();
 					break;
 				default:
 						System.out.println(e.getCode().getName());
@@ -159,11 +195,14 @@ public class Tela {
 	
 	
 	private void display(String valor) {
-		StringBuffer resultado = new StringBuffer();
-		
 		resultado.append(valor);
-		
+		System.out.println(resultado);
+		txtDisplay.setText(String.valueOf(resultado));
 	}
-	
+
+	private void limparDisplay() {
+		resultado.delete(0, resultado.length());
+		txtDisplay.setText("0");
+	}
 	
 }

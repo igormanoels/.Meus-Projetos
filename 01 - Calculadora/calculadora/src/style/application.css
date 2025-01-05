@@ -26,7 +26,7 @@
 
 .button {
 	-fx-background-color: #E7EFF6;
-	-fx-font: bold 28px Inter;
+	-fx-font: bold 26px Inter;
 	-fx-text-fill: #2A4D69;
 	
 	-fx-border-radius: 8px;
@@ -41,6 +41,7 @@
 }
 
 #botaoIgual {
+	-fx-font: bold 30px Inter;
 	-fx-pref-width: 66px;  
     -fx-pref-height: 136px;
      
