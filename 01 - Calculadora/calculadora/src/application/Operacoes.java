@@ -14,10 +14,11 @@ public class Operacoes {
 	}
 	
 	
-	public void realizarCalculo() {
+	public String realizarCalculo(StringBuffer expressao) {
 		String operador = "";
 		double a = 1, b = 0;
 		
+		System.out.println(expressao);
 		
 		switch (operador) {
 		case "*":
@@ -35,7 +36,9 @@ public class Operacoes {
 		case "√":
 			raiz(a);
 			break;
-		}		
+		}
+		
+		return String.valueOf(expressao);
 	}
 	
 	

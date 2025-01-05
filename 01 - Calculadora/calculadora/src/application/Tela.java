@@ -10,7 +10,8 @@ import javafx.scene.layout.GridPane;
 public class Tela {
 	
 	private Label txtDisplay = new Label();
-	private StringBuffer resultado = new StringBuffer();
+	private StringBuffer expressao = new StringBuffer();
+	private Operacoes op = new Operacoes();
 	
 	public Scene telaCalculadora() {
 		
@@ -108,15 +109,7 @@ public class Tela {
 		
 		btnClear.setOnAction(e -> limparDisplay());
 		
-		
-// 		Alterar para chamar a função de executar cálculo
-//		if (e.getCode() == KeyCode.) {
-//		System.out.println("Botão igual apertado.");
-//	}
-//		
-//		btnIgual.setOnAction(
-//			e -> display("=")		
-//		); 
+		btnIgual.setOnAction(e -> calcularExpressa()); 
 		
 		limparDisplay();
 
@@ -139,7 +132,7 @@ public class Tela {
 		} else {
 			switch (e.getCode()) {
 				case EQUALS:
-						System.out.println("Botão igual apertado.");
+						calcularExpressa();
 					break;
 				case DIGIT0, NUMPAD0:
 						display("0");
@@ -195,14 +188,19 @@ public class Tela {
 	
 	
 	private void display(String valor) {
-		resultado.append(valor);
-		System.out.println(resultado);
-		txtDisplay.setText(String.valueOf(resultado));
+		expressao.append(valor);
+		System.out.println(expressao);
+		txtDisplay.setText(String.valueOf(expressao));
 	}
 
+	
 	private void limparDisplay() {
-		resultado.delete(0, resultado.length());
+		expressao.delete(0, expressao.length());
 		txtDisplay.setText("0");
 	}
 	
+	
+	private void calcularExpressa() {
+		txtDisplay.setText(op.realizarCalculo(expressao));
+	}
 }
