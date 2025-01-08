@@ -157,6 +157,7 @@ tela.title('YT Download')
 tela.geometry('720x480')
 tela.resizable(width=False, height=False)
 tela.config(background="#1E1E1E", border=False)
+tela.iconbitmap("D:\GitHub\.Meus-Projetos//02 - YTDownload\src\img\icon.ico")
 
 
 ## Componentes da tela
@@ -201,7 +202,7 @@ barraProgresso.place(x=8, y=448)
 
 
 # Dados do Desenvolvedor e Versão do projeto
-lbDesenvolvedor = Label(tela, font=('Viga 10'), text="GitHub igormanoels", bg="#1E1E1E", fg="#F1F1F1")
+lbDesenvolvedor = Label(tela, font=('Viga 10'), text="GitHub: igormanoels", bg="#1E1E1E", fg="#F1F1F1")
 lbDesenvolvedor.place(x=600, y=5)
 lbVersao = Label(tela, font=('Viga 8'), text="Versão 1.0.0", bg="#1E1E1E", fg="#F1F1F1")
 lbVersao.place(x=650, y=25)
