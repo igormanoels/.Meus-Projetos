@@ -1,13 +1,14 @@
 from tkinter import *
 from tkinter import messagebox
+from tkinter import ttk
 from tkinter.filedialog import askdirectory
 from pytubefix import YouTube
 from pytubefix.cli import on_progress
 import yt_dlp
+import threading
 
 
-
-# Antes do programa iniciar ele deve descobrir se o sistema é windows ou linux, pra definir o local padrão
+# Na próxima versão, antes do programa iniciar ele deve descobrir se o sistema é windows ou linux, pra definir o local padrão
 # Variáveis Globais
 SISTEMA = 'windows'
 LOCAL = 'Informe aqui a pasta de destino'
@@ -46,6 +47,56 @@ def alteraFormatoMP3():
     FORMATO = 'MP3'
 
 
+def zerarPrograma():
+    barraProgresso.set(0)
+    LINK.delete(0, etLink.END)
+
+
+def downloadVideo():
+    def progressoDaBarra(youtubestream, chunk, bytes_remaining):
+        downloaded = youtubestream.filesize - bytes_remaining
+        barraProgresso["value"] = downloaded
+        tela.update_idletasks()
+
+    try:
+        yt = YouTube(LINK, on_progress_callback=progressoDaBarra)  
+        titulo = yt.title
+        youtubestream = yt.streams.get_highest_resolution() 
+        barraProgresso['maximum'] = youtubestream.filesize
+        youtubestream.download(output_path=LOCAL)
+        messagebox.showinfo("Download concluído com sucesso!", f"Título: {titulo} \nFormato: MP4", command=zerarPrograma)
+    except Exception as e:
+        messagebox.showerror("Erro", f"Ocorreu um erro: {e}")
+
+
+def downloadMusica():
+    def status_hook(d):
+        if d['status'] == 'downloading':
+            progress = int(d['downloaded_bytes'] / d['total_bytes'] * 100)
+            barraProgresso['value'] = progress
+            tela.update_idletasks()
+
+    try:
+        options = {
+        'format': 'bestaudio/best',
+        'postprocessors': [{
+            'key': 'FFmpegExtractAudio', 
+            'preferredcodec': 'mp3', 
+            'preferredquality': '320',}],
+        'ffmpeg_location': 'D:\\GitHub\\.Meus-Projetos\\02 - YTDownload\\src\\bin\\ffmpeg.exe', # alterar o caminho absoluto, pelo relativo dentro do projeto
+        'outtmpl': LOCAL+'/%(title)s.%(ext)s',
+        'progress_hooks': [status_hook],
+    }
+        with yt_dlp.YoutubeDL(options) as ydl:
+            ydl.download([LINK])
+            info_dict = ydl.extract_info(LINK, download=False)
+            titulo = info_dict.get('title', 'Título não disponível')
+            messagebox.showinfo("Download concluído com sucesso!", f"Título: {titulo} \nFormato: MP4", command=zerarPrograma)
+
+    except Exception as e:
+        messagebox.showerror("Erro", f"Ocorreu um erro: {e}")
+
+
 def iniciarDownload():
     global LINK, FORMATO
     LINK = etLink.get()
@@ -54,81 +105,93 @@ def iniciarDownload():
     if LOCAL == 'Informe aqui a pasta de destino':
         messagebox.showinfo("Atenção!", "Antes de iniciar o download informe o local desejado.")
         return
-
-    if FORMATO == 0:
+    elif FORMATO == 0:
         messagebox.showinfo("Atenção!", "Antes de inciar o download selecione um formato.")
         return
-
-    if LINK == 'null' or LINK == 'Insira seu link aqui!' or LINK == '': 
+    elif LINK == 'null' or LINK == 'Insira seu link aqui!' or LINK == '': 
         print(LINK)
         messagebox.showinfo("Atenção!", "Antes de inciar o download informe o link desejado.")
         return
 
-
     match FORMATO:
         case 'MP4':
-            try:
-                yt = YouTube(LINK, on_progress_callback=on_progress)  # Cria o objeto YouTube
-                print(f"Título do vídeo: {yt.title}")  # Exibe o título do vídeo
-                ys = yt.streams.get_highest_resolution()  # Alterar para escolher a qualidade de 720x480 
-                ys.download(output_path=LOCAL)  # Faz o download do vídeo
-                print("Download concluído!")
-            except Exception as e:
-                messagebox.showerror("Erro", f"Ocorreu um erro: {e}")
+            threading.Thread(target=downloadVideo).start()
         case 'MP3':
-            try:
-                options = {
-                    'format': 'bestaudio/best',
-                    'postprocessors': [{
-                        'key': 'FFmpegExtractAudio',
-                        'preferredcodec': 'mp3',
-                        'preferredquality': '320',
-                    }],
-                    'ffmpeg_location': 'D:\\GitHub\\.Meus-Projetos\\02 - YTDownload\\src\\bin\\ffmpeg.exe',  
-                    # alterar o caminho absoluto, pelo relativo dentro do projeto
-                    'outtmpl': LOCAL+'/%(title)s.%(ext)s',
-                }
+            threading.Thread(target=downloadMusica).start()
 
-                with yt_dlp.YoutubeDL(options) as ydl:
-                    ydl.download([LINK])
-            except Exception as e:
-                messagebox.showerror("Erro", f"Ocorreu um erro: {e}")
 
+def gerarBotao(parent, text, command):
+    return Button (
+        parent, 
+        text = text, 
+        command = command, 
+        font='Viga', 
+        bg="#1E1E1E", 
+        fg="#DF9C57", 
+        width=12, 
+        height=2, 
+        relief="ridge", 
+        bd=2, 
+        activebackground="#DF9C57", 
+        activeforeground="#1E1E1E",
+    )
 
 
 # Propriedades da Tela
 tela = Tk()
 tela.title('YT Download')
-#tela.iconphoto(False, PhotoImage(file='/docs/figma/design system/icon-janela.png'))
 tela.geometry('720x480')
 tela.resizable(width=False, height=False)
-tela.config(background=branco, border=False)
+tela.config(background="#1E1E1E", border=False)
 
 
 ## Componentes da tela
+img = PhotoImage(file="D:\GitHub\.Meus-Projetos//02 - YTDownload\src\img\logo.png")
+lbLogo = Label(tela, image=img, bg="#1E1E1E")
+lbLogo.place(x=255, y=44)
 
-#lbLogo = Label(tela, image='D://GitHub//.Meus-Projetos//02 - YTDownload//docs//figma//design system//Logo final.png').place(x=255, y=44)
-
-etDestino = Entry(tela, width=35, font=('Viga 16'))
+etDestino = Entry(tela, width=35, font=('Viga 16'), fg="#1E1E1E", bg="#DF9C57")
 etDestino.insert(0, LOCAL)
 etDestino.place(x=80, y=183)
 
-btnProcurar = Button(tela, text='Procurar', command=buscarDiretorio, font='Viga', bg=branco, fg=laranja, width=12, height=2)
+btnProcurar = gerarBotao(tela, text='Procurar', command=buscarDiretorio)
 btnProcurar.place(x=520, y=187)
 
-etLink = Entry(tela, width=46, font=('Viga 16'))
+etLink = Entry(tela, width=46, font=('Viga 16'), fg="#1E1E1E", bg="#DF9C57")
 etLink.insert(0, 'Insira seu link aqui!')
 etLink.place(x=80, y=247)
 
-btnFormato4 = Button(tela, command=alteraFormatoMP4, text='MP4', font='Viga', bg=branco, fg=laranja, width=12, height=2)
+btnFormato4 = gerarBotao(tela, command=alteraFormatoMP4, text='MP4')
 btnFormato4.place(x=248, y=311)
 
-btnFormato3 = Button(tela, command=alteraFormatoMP3, text='MP3', font='Viga', bg=branco, fg=laranja, width=12, height=2)
+btnFormato3 = gerarBotao(tela, command=alteraFormatoMP3, text='MP3')
 btnFormato3.place(x=384, y=311)
 
-btnDonwload = Button(tela, command=iniciarDownload, text='Download', font='Viga', bg=branco, fg=laranja, width=12, height=2)
+btnDonwload = gerarBotao(tela, command=iniciarDownload, text='Download')
 btnDonwload.place(x=520, y=311)
 
 
+def configurarBarraProgresso():
+    estilo = ttk.Style()
+    estilo.theme_use('clam')
+    estilo.configure("TProgressbar",
+                     thickness=30,
+                     troughcolor="#F1F1F1",
+                     background="#DF9C57",
+                     )
+
+configurarBarraProgresso()
+
+barraProgresso = ttk.Progressbar(tela, orient=HORIZONTAL, length=704, mode='determinate', style="TProgressbar")
+barraProgresso.place(x=8, y=448)
+
+
+# Dados do Desenvolvedor e Versão do projeto
+lbDesenvolvedor = Label(tela, font=('Viga 10'), text="GitHub igormanoels", bg="#1E1E1E", fg="#F1F1F1")
+lbDesenvolvedor.place(x=600, y=5)
+lbVersao = Label(tela, font=('Viga 8'), text="Versão 1.0.0", bg="#1E1E1E", fg="#F1F1F1")
+lbVersao.place(x=650, y=25)
+
 
 tela.mainloop()
+
