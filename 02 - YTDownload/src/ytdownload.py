@@ -6,17 +6,18 @@ from pytubefix import YouTube
 from pytubefix.cli import on_progress
 import yt_dlp
 import threading
+import os 
 
 
 # Na próxima versão, antes do programa iniciar ele deve descobrir se o sistema é windows ou linux, pra definir o local padrão
 # Variáveis Globais
 SISTEMA = 'windows'
-LOCAL = 'Informe aqui a pasta de destino'
+LOCAL = os.path.join(os.environ['USERPROFILE'], 'Downloads')
 FORMATO = 0
-LINK = 'null'
+LINK = 'Insira seu link aqui!'
 
 
-# Cores
+# Usar na próxima versão essa tabela de cores, com a possibilidade de alterar os modos (Dark/Light)
 preto = "#1E1E1E"
 laranja = "#DF9C57"
 branco = "#F1F1F1"
@@ -27,7 +28,6 @@ vermelho = "#721B1B"
 def buscarDiretorio():
     novo_local = askdirectory(title="Selecione a pasta desejada")
     atualizarDiretorio(novo_local)
-    print(LOCAL)
 
 
 def atualizarDiretorio(novo_local):
@@ -48,28 +48,39 @@ def alteraFormatoMP3():
 
 
 def zerarPrograma():
-    barraProgresso.set(0)
-    LINK.delete(0, etLink.END)
+    global LINK
+    barraProgresso['value'] = 0
+    etLink.delete(0, END)
+    etLink.insert(0, 'Insira aqui um novo link!')
 
 
 def downloadVideo():
+    # Na próxima versão necessariamente o programa deve mapear a pasta videos ou trocar pela escolhida
+    # pastaVideos = os.path.join(os.environ['USERPROFILE'], 'Vídeos') 
     def progressoDaBarra(youtubestream, chunk, bytes_remaining):
         downloaded = youtubestream.filesize - bytes_remaining
         barraProgresso["value"] = downloaded
         tela.update_idletasks()
 
+    # Na próxima versão trazer resoluções mais altas que 720p
     try:
         yt = YouTube(LINK, on_progress_callback=progressoDaBarra)  
         titulo = yt.title
-        youtubestream = yt.streams.get_highest_resolution() 
+        #youtubestream = yt.streams.get_highest_resolution()
+        youtubestream = yt.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first()
+ 
         barraProgresso['maximum'] = youtubestream.filesize
         youtubestream.download(output_path=LOCAL)
-        messagebox.showinfo("Download concluído com sucesso!", f"Título: {titulo} \nFormato: MP4", command=zerarPrograma)
+        messagebox.showinfo("Download concluído com sucesso!", f"Título: {titulo} \nFormato: MP4") 
+        zerarPrograma()
     except Exception as e:
         messagebox.showerror("Erro", f"Ocorreu um erro: {e}")
+        zerarPrograma()
 
 
 def downloadMusica():
+    # Na próxima versão necessariamente o programa deve mapear a pasta videos ou trocar pela escolhida
+    # pastaMusicas = os.path.join(os.environ['USERPROFILE'], 'Músicas')
     def status_hook(d):
         if d['status'] == 'downloading':
             progress = int(d['downloaded_bytes'] / d['total_bytes'] * 100)
@@ -91,10 +102,13 @@ def downloadMusica():
             ydl.download([LINK])
             info_dict = ydl.extract_info(LINK, download=False)
             titulo = info_dict.get('title', 'Título não disponível')
-            messagebox.showinfo("Download concluído com sucesso!", f"Título: {titulo} \nFormato: MP4", command=zerarPrograma)
+            messagebox.showinfo("Download concluído com sucesso!", f"Título: {titulo} \nFormato: MP3")
+            zerarPrograma()
 
     except Exception as e:
-        messagebox.showerror("Erro", f"Ocorreu um erro: {e}")
+        messagebox.showerror("Erro", f"Ocorreu um erro: {e}") 
+        zerarPrograma()
+
 
 
 def iniciarDownload():
@@ -158,7 +172,7 @@ btnProcurar = gerarBotao(tela, text='Procurar', command=buscarDiretorio)
 btnProcurar.place(x=520, y=187)
 
 etLink = Entry(tela, width=46, font=('Viga 16'), fg="#1E1E1E", bg="#DF9C57")
-etLink.insert(0, 'Insira seu link aqui!')
+etLink.insert(0, LINK)
 etLink.place(x=80, y=247)
 
 btnFormato4 = gerarBotao(tela, command=alteraFormatoMP4, text='MP4')
