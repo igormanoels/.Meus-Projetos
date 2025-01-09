@@ -66,7 +66,6 @@ def downloadVideo():
     try:
         yt = YouTube(LINK, on_progress_callback=progressoDaBarra)  
         titulo = yt.title
-        #youtubestream = yt.streams.get_highest_resolution()
         youtubestream = yt.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first()
  
         barraProgresso['maximum'] = youtubestream.filesize
@@ -123,7 +122,6 @@ def iniciarDownload():
         messagebox.showinfo("Atenção!", "Antes de inciar o download selecione um formato.")
         return
     elif LINK == 'null' or LINK == 'Insira seu link aqui!' or LINK == '': 
-        print(LINK)
         messagebox.showinfo("Atenção!", "Antes de inciar o download informe o link desejado.")
         return
 
@@ -170,7 +168,7 @@ etDestino.insert(0, LOCAL)
 etDestino.place(x=80, y=183)
 
 btnProcurar = gerarBotao(tela, text='Procurar', command=buscarDiretorio)
-btnProcurar.place(x=520, y=187)
+btnProcurar.place(x=520, y=183)
 
 etLink = Entry(tela, width=46, font=('Viga 16'), fg="#1E1E1E", bg="#DF9C57")
 etLink.insert(0, LINK)
@@ -203,7 +201,7 @@ barraProgresso.place(x=8, y=448)
 
 # Dados do Desenvolvedor e Versão do projeto
 lbDesenvolvedor = Label(tela, font=('Viga 10'), text="GitHub: igormanoels", bg="#1E1E1E", fg="#F1F1F1")
-lbDesenvolvedor.place(x=600, y=5)
+lbDesenvolvedor.place(x=595, y=5)
 lbVersao = Label(tela, font=('Viga 8'), text="Versão 1.0.0", bg="#1E1E1E", fg="#F1F1F1")
 lbVersao.place(x=650, y=25)
 
