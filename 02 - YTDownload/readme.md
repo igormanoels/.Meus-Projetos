@@ -1,39 +1,37 @@
 # YTDownload
 *"A maneira prática para fazer backup de seus vídeos."*
 
+
 ## Sobre o Projeto
 - O projeto se deu através da possibilidade de facilitar o processo de backup de arquivos de mídia. Tive contato com pessoas próximas que tinham essa necessidade, porém não encontravam uma solução que se adequacem as suas máquinas de maneira simplificada. Diante disso o projeto do YT Download surgiu para sanar essa necessidade.
 - Objetivos: Facilitar o processo de backup de seus conteúdos hospedados do Youtube, seja por link único ou playlist. 
 - Tecnologias utilizadas: Python, TKInter, PytubeFix, YT_DPL.
-
 - Tela Principal:
 
 ![Exemplo de Tela](https://github.com/igormanoels/.Meus-Projetos/blob/main/02%20-%20YTDownload/docs/images/0%20-%20Amostra.jpg)
 
 
-## Apresentação
-- vídeo
-
-
 ## Ferramentas disponíveis
-- Para que serve, o que faz?
-	- Liste cada ferramenta ou funcionalidade com uma breve explicação.
-		- Exemplo:
-		- Relatórios Gerenciais: Geração de relatórios sobre vendas e estoque.
-		- Cadastro de Produtos: Permite cadastrar produtos com informações detalhadas.
-	- Use ícones ou emojis para destacar cada funcionalidade.
-		- Exemplo: 🛠️ Gestão de Estoque.
+- Ferramenta para realizar backup direto do Youtube.
+	- Permite alterar o diretório de destino do arquivo de mídia.
+ 	- Realiza o backup de vídeos em 720p.
+  	- Realiza o backup de músicas em mp3.
+  	- Também é possivel fazer backup de playlists
 
 
-## Como instalar o projeto?
-- Vídeo
+## Como instalar o programa?
+https://github.com/user-attachments/assets/66bc29ac-daee-496c-8f89-c82f82b5f4c5
 
 
-## Como usar?
+## Como funciona?
 ### Funções presentes na tela
 ![Tutorial](https://github.com/igormanoels/.Meus-Projetos/blob/main/02%20-%20YTDownload/docs/images/1%20-%20funcoes.JPG)
 ### Passos a passo para uso
 ![Tutorial](https://github.com/igormanoels/.Meus-Projetos/blob/main/02%20-%20YTDownload/docs/images/2%20-%20passos.JPG)
+
+
+## Tutorial de Uso
+https://github.com/user-attachments/assets/e839e6ef-51d3-4007-b6a8-d7e89b22d536
 
 
 ## Versões:
@@ -41,8 +39,7 @@
   - Requisitos necessários:
     - Sistema Operacional Windows 10 ou superior
     - 4GB RAM
-    - Espaço em Disco: 500MB
-    - Python 3.12
+    - Espaço em Disco: 250MB
 
 
 ## Participantes
