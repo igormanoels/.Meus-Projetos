@@ -8,8 +8,7 @@ import yt_dlp
 import threading
 import os 
 
-
-# Na próxima versão, antes do programa iniciar ele deve descobrir se o sistema é windows ou linux, pra definir o local padrão
+# Na próxima versão, antes do programa iniciar ele deve descobrir se o sistema é windows ou linux, para definir o local padrão
 # Variáveis Globais
 SISTEMA = 'windows'
 LOCAL = os.path.join(os.environ['USERPROFILE'], 'Downloads')
@@ -66,7 +65,6 @@ def downloadVideo():
     try:
         yt = YouTube(LINK, on_progress_callback=progressoDaBarra)  
         titulo = yt.title
-        #youtubestream = yt.streams.get_highest_resolution()
         youtubestream = yt.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first()
  
         barraProgresso['maximum'] = youtubestream.filesize
@@ -74,8 +72,9 @@ def downloadVideo():
         messagebox.showinfo("Download concluído com sucesso!", f"Título: {titulo} \nFormato: MP4") 
         zerarPrograma()
     except Exception as e:
-        messagebox.showerror("Erro", f"Ocorreu um erro: {e}")
+        messagebox.showerror("Erro", f"O vídeo selecionado não está disponível para download. \nErro: {e}")
         zerarPrograma()
+    
 
 
 def downloadMusica():
@@ -94,7 +93,7 @@ def downloadMusica():
             'key': 'FFmpegExtractAudio', 
             'preferredcodec': 'mp3', 
             'preferredquality': '320',}],
-        'ffmpeg_location': 'D:\\GitHub\\.Meus-Projetos\\02 - YTDownload\\src\\bin\\ffmpeg.exe', # alterar o caminho absoluto, pelo relativo dentro do projeto
+        'ffmpeg_location': 'src\\bin\\ffmpeg.exe', # alterar o caminho absoluto, pelo relativo dentro do projeto
         'outtmpl': LOCAL+'/%(title)s.%(ext)s',
         'progress_hooks': [status_hook],
     }
@@ -114,7 +113,6 @@ def downloadMusica():
 def iniciarDownload():
     global LINK, FORMATO
     LINK = etLink.get()
-    ffmpeg = '/src/bin/ffmpeg.exe'
 
     if LOCAL == 'Informe aqui a pasta de destino':
         messagebox.showinfo("Atenção!", "Antes de iniciar o download informe o local desejado.")
@@ -123,7 +121,6 @@ def iniciarDownload():
         messagebox.showinfo("Atenção!", "Antes de inciar o download selecione um formato.")
         return
     elif LINK == 'null' or LINK == 'Insira seu link aqui!' or LINK == '': 
-        print(LINK)
         messagebox.showinfo("Atenção!", "Antes de inciar o download informe o link desejado.")
         return
 
@@ -157,33 +154,32 @@ tela.title('YT Download')
 tela.geometry('720x480')
 tela.resizable(width=False, height=False)
 tela.config(background="#1E1E1E", border=False)
-tela.iconbitmap("D:\GitHub\.Meus-Projetos//02 - YTDownload\src\img\icon.ico")
+caminho_icone = os.path.abspath("02 - YTDownload\src\img\icon.ico")
+tela.iconbitmap(caminho_icone)
 
 
 ## Componentes da tela
-img = PhotoImage(file="D:\GitHub\.Meus-Projetos//02 - YTDownload\src\img\logo.png")
+caminho_logo = os.path.abspath("02 - YTDownload\src\img\logo.png")
+img = PhotoImage(file=caminho_logo)
 lbLogo = Label(tela, image=img, bg="#1E1E1E")
-lbLogo.place(x=255, y=44)
+lbLogo.place(x=240, y=44)
 
 etDestino = Entry(tela, width=35, font=('Viga 16'), fg="#1E1E1E", bg="#DF9C57")
 etDestino.insert(0, LOCAL)
 etDestino.place(x=80, y=183)
 
-btnProcurar = gerarBotao(tela, text='Procurar', command=buscarDiretorio)
-btnProcurar.place(x=520, y=187)
+btnProcurar = (gerarBotao(tela, text='Procurar', command=buscarDiretorio))
+btnProcurar.place(x=520, y=183)
 
 etLink = Entry(tela, width=46, font=('Viga 16'), fg="#1E1E1E", bg="#DF9C57")
 etLink.insert(0, LINK)
 etLink.place(x=80, y=247)
 
-btnFormato4 = gerarBotao(tela, command=alteraFormatoMP4, text='MP4')
-btnFormato4.place(x=248, y=311)
+btnFormato4 = gerarBotao(tela, command=alteraFormatoMP4, text='MP4').place(x=248, y=311)
 
-btnFormato3 = gerarBotao(tela, command=alteraFormatoMP3, text='MP3')
-btnFormato3.place(x=384, y=311)
+btnFormato3 = gerarBotao(tela, command=alteraFormatoMP3, text='MP3').place(x=384, y=311)
 
-btnDonwload = gerarBotao(tela, command=iniciarDownload, text='Download')
-btnDonwload.place(x=520, y=311)
+btnDonwload = gerarBotao(tela, command=iniciarDownload, text='Download').place(x=520, y=311)
 
 
 def configurarBarraProgresso():
@@ -203,7 +199,7 @@ barraProgresso.place(x=8, y=448)
 
 # Dados do Desenvolvedor e Versão do projeto
 lbDesenvolvedor = Label(tela, font=('Viga 10'), text="GitHub: igormanoels", bg="#1E1E1E", fg="#F1F1F1")
-lbDesenvolvedor.place(x=600, y=5)
+lbDesenvolvedor.place(x=595, y=5)
 lbVersao = Label(tela, font=('Viga 8'), text="Versão 1.0.0", bg="#1E1E1E", fg="#F1F1F1")
 lbVersao.place(x=650, y=25)
 
