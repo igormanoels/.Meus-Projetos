@@ -93,7 +93,7 @@ def downloadMusica():
             'key': 'FFmpegExtractAudio', 
             'preferredcodec': 'mp3', 
             'preferredquality': '320',}],
-        'ffmpeg_location': 'src\\bin\\ffmpeg.exe', # alterar o caminho absoluto, pelo relativo dentro do projeto
+        'ffmpeg_location': '02 - YTDownload\\src\\bin\\ffmpeg.exe', # alterar o caminho absoluto, pelo relativo dentro do projeto
         'outtmpl': LOCAL+'/%(title)s.%(ext)s',
         'progress_hooks': [status_hook],
     }
